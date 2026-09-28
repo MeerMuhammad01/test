@@ -1,14 +1,15 @@
 const request = require('supertest')
 const server = require('../server')
 
-describe('GET /sayhello', () => {
-    test('should return hello message', async () => {
+describe('GET /add', () => {
+    test('should return the addition of two numbers', async () => {
         const response = await request(server)
-            .get('/sayhello')
+            .get('/add?a=5&b=3')
 
         expect(response.statusCode).toBe(200)
+
         expect(response.body).toEqual({
-            Message: 'say Hello'
+            result: 8
         })
     })
 })
