@@ -65,7 +65,7 @@ jobs:
         env:
           PROJECT_ID: ${{ secrets.PROJECTID }}
           TEAM_ID: ${{ secrets.TEAMID }}
-          VERCEL_TOKEN: ${{ secrets.VACELTOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCELTOKEN }}
 
       - name: Pull Vercel project settings
         run: |
@@ -76,7 +76,7 @@ jobs:
             --scope "$TEAM_ID"
         env:
           TEAM_ID: ${{ secrets.TEAMID }}
-          VERCEL_TOKEN: ${{ secrets.VACELTOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCELTOKEN }}
 
       - name: Deploy to Vercel
         run: |
@@ -86,4 +86,4 @@ jobs:
             --scope "$TEAM_ID"
         env:
           TEAM_ID: ${{ secrets.TEAMID }}
-          VERCEL_TOKEN: ${{ secrets.VACELTOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCELTOKEN }}
