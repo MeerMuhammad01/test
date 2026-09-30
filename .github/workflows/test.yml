@@ -11,7 +11,7 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: Run Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -30,14 +30,13 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build project
-        run: npm run build
 
   deploy:
     name: Deploy to Vercel
     needs: test
     runs-on: ubuntu-latest
 
+    # Only deploy after tests pass on main
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
@@ -79,20 +78,9 @@ jobs:
           TEAM_ID: ${{ secrets.TEAMID }}
           VERCEL_TOKEN: ${{ secrets.VACELTOKEN }}
 
-      - name: Build Vercel deployment
-        run: |
-          vercel build \
-            --prod \
-            --token "$VERCEL_TOKEN" \
-            --scope "$TEAM_ID"
-        env:
-          TEAM_ID: ${{ secrets.TEAMID }}
-          VERCEL_TOKEN: ${{ secrets.VACELTOKEN }}
-
       - name: Deploy to Vercel
         run: |
           vercel deploy \
-            --prebuilt \
             --prod \
             --token "$VERCEL_TOKEN" \
             --scope "$TEAM_ID"
