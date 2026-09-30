@@ -30,13 +30,12 @@ jobs:
       - name: Run tests
         run: npm test
 
-
   deploy:
     name: Deploy to Vercel
     needs: test
     runs-on: ubuntu-latest
 
-    # Only deploy after tests pass on main
+    # Deploy only when main is pushed and tests pass
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     steps:
@@ -54,6 +53,11 @@ jobs:
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+
+      - name: Verify Vercel authentication
+        run: vercel whoami --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCELTOKEN }}
 
       - name: Link Vercel project
         run: |
@@ -83,7 +87,8 @@ jobs:
           vercel deploy \
             --prod \
             --token "$VERCEL_TOKEN" \
-            --scope "$TEAM_ID"
+            --scope "$TEAM_ID" \
+            --yes
         env:
           TEAM_ID: ${{ secrets.TEAMID }}
           VERCEL_TOKEN: ${{ secrets.VERCELTOKEN }}
